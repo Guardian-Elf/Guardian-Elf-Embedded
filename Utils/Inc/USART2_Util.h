@@ -7,7 +7,11 @@
 
 #include "stm32f103xe.h"
 
-// 初始化
+// 接收缓冲区
+#define USART2_R_SIZE 300
+// 发送缓冲区
+#define USART2_T_SIZE 300
+// 初始
 void USART2_Init(void);
 
 // 发送一个字符
@@ -22,8 +26,11 @@ int USART2_Printf(const char *format, ...);
 // 中断函数
 void USART2_IRQHandler(void);
 
+// 回调
+void USART2_ReceiveCallback();
+
 // 接收缓冲区相关（根据需求添加）
-extern uint8_t USART2_buffer[100];
-extern uint8_t USART2_size;
+extern uint8_t USART2_buffer[USART2_R_SIZE];
+extern uint32_t USART2_size;
 
 #endif //STM32F103ZET6_USART2_UTIL_H

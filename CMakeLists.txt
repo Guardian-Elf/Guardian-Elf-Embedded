@@ -36,7 +36,11 @@ add_executable(${CMAKE_PROJECT_NAME}
         Demo/Src/Interrupt_demo.c
         Demo/Src/USART_demo.c
         Utils/Src/USART2_Util.c
-        Utils/Src/USART1_Util.c)
+        Utils/Src/USART1_Util.c
+        Libs/GP10/GP10_data_struct.h
+        Libs/GP10/GP10_util.h
+        Libs/GP10/GP10_util.c
+)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
@@ -56,6 +60,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         # Add user defined include paths
         Utils/Inc
         Demo/Inc
+        Libs/GP10
 )
 
 # Add project symbols (macros)

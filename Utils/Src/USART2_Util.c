@@ -1,10 +1,11 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "USART2_Util.h"
+#include "USART1_Util.h"
 
 // USART2 接收缓冲区
-uint8_t USART2_buffer[100];
-uint8_t USART2_size = 0;
+uint8_t USART2_buffer[USART2_R_SIZE] = {0};
+uint32_t USART2_size = 0;
 
 void USART2_Init(void) {
     // 1. 时钟使能
@@ -35,8 +36,8 @@ void USART2_Init(void) {
 
     // 4. USART2配置
 
-    // 波特率 115200（系统时钟36MHz）
-    USART2->BRR = 0x139;
+    // 波特率 9600（系统时钟36MHz）
+    USART2->BRR = 0xEA6;
 
     // 使能USART2
     USART2->CR1 |= USART_CR1_UE; // 使能USART2
@@ -53,6 +54,7 @@ void USART2_Init(void) {
     NVIC_SetPriorityGrouping(0);
     NVIC_SetPriority(USART2_IRQn, 3);
     NVIC_EnableIRQ(USART2_IRQn);
+
 }
 
 void USART2_SendByte(uint8_t byte) {
@@ -79,13 +81,13 @@ void USART2_IRQHandler(void) {
         volatile uint32_t temp = USART2->DR;  // 清除IDLE标志
         (void)temp;
         USART2_buffer[USART2_size] = '\0';  // 添加字符串结束符
-        USART2_Printf("USART2 Received: %s\r\n", USART2_buffer);
         USART2_size = 0;  // 清零缓冲区
+        USART2_ReceiveCallback();
     }
 }
 
 int USART2_Printf(const char *format, ...) {
-    char buffer[256];
+    char buffer[USART2_T_SIZE] = {"\0"};
     va_list args;
 
     va_start(args, format);

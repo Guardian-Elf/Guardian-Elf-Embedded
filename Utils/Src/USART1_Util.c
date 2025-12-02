@@ -7,8 +7,8 @@
 #include "USART1_Util.h"
 
 // USART1 接收缓冲区
-uint8_t USART1_buffer[100];
-uint8_t USART1_size = 0;
+uint8_t USART1_buffer[USART1_R_SIZE] = {0};
+uint32_t USART1_size = 0;
 
 void USART1_Init(void) {
     // 1. 时钟使能
@@ -17,7 +17,7 @@ void USART1_Init(void) {
     RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
 
     // 2. 使能部分重映射
-    AFIO->MAPR |= AFIO_MAPR_USART1_REMAP;  // 部分重映射到PB6, PB7
+    AFIO->MAPR = AFIO_MAPR_USART1_REMAP;  // 部分重映射到PB6, PB7
 
     // 3. 引脚配置 - PB6(TX), PB7(RX)
 
@@ -43,6 +43,8 @@ void USART1_Init(void) {
     NVIC_SetPriorityGrouping(0);
     NVIC_SetPriority(USART1_IRQn, 3);
     NVIC_EnableIRQ(USART1_IRQn);
+
+
 }
 
 void USART1_SendByte(uint8_t byte) {
@@ -58,6 +60,13 @@ void USART1_SendString(char *str) {
     }
 }
 
+void USART1_SendStringWithLen(char *str, int len) {
+    while (len--) {
+        USART1_SendByte(*str);
+        str++;
+    }
+}
+
 void USART1_IRQHandler(void) {
     if (USART1->SR & USART_SR_RXNE) {  // 先处理接收
         USART1_buffer[USART1_size++] = USART1->DR;
@@ -68,13 +77,13 @@ void USART1_IRQHandler(void) {
     } else if (USART1->SR & USART_SR_IDLE) {  // 再处理空闲中断
         USART1->DR;  // 清除IDLE标志
         USART1_buffer[USART1_size] = '\0';  // 添加字符串结束符
-        USART1_Printf("USART1 Received: %s\r\n", USART1_buffer);
         USART1_size = 0;  // 清零缓冲区
+        USART1_ReceiveCallback();
     }
 }
 
 int USART1_Printf(const char *format, ...) {
-    char buffer[256];
+    char buffer[USART1_T_SIZE] = {'\0'};
     va_list args;
 
     va_start(args, format);
@@ -87,4 +96,3 @@ int USART1_Printf(const char *format, ...) {
         USART1_SendByte(*p++);
     }
 }
-

@@ -8,53 +8,40 @@ uint8_t USART2_buffer[USART2_R_SIZE] = {0};
 uint32_t USART2_size = 0;
 
 void USART2_Init(void) {
-    // 1. 时钟使能
+    // 1. 时钟使能 - 使用默认PA2, PA3
+    RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;  // GPIOA时钟
 
-    // 引脚时钟（使用PD5-TX, PD6-RX）
-    RCC->APB2ENR |= RCC_APB2ENR_IOPDEN;
-
-    // 配置USART2时钟（USART2在APB1总线上）
+    // USART2时钟（APB1总线）
     RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
 
-    // 复用功能时钟（重映射需要AFIO）
-    RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
+    // 2. 移除重映射代码
+    // AFIO->MAPR |= AFIO_MAPR_USART2_REMAP;  // 删除这行
 
-    // 2. 使能部分重映射（重映射到PD5, PD6）
-    AFIO->MAPR |= AFIO_MAPR_USART2_REMAP;
+    // 3. 引脚配置 - PA2(TX), PA3(RX)
 
-    // 3. 引脚配置 - PD5(TX), PD6(RX)
+    // 配置PA2为复用推挽输出（TX）
+    GPIOA->CRL &= ~GPIO_CRL_CNF2;  // 清除配置位
+    GPIOA->CRL |= GPIO_CRL_CNF2_1; // 复用推挽输出
+    GPIOA->CRL |= GPIO_CRL_MODE2;  // 输出模式，最大速度50MHz
 
-    // 配置PD5为复用推挽输出（TX）
-    GPIOD->CRL &= ~GPIO_CRL_CNF5;  // 清除配置位
-    GPIOD->CRL |= GPIO_CRL_CNF5_1; // 复用推挽输出
-    GPIOD->CRL |= GPIO_CRL_MODE5;  // 输出模式，最大速度50MHz
-
-    // 配置PD6为浮空输入（RX）
-    GPIOD->CRL &= ~GPIO_CRL_MODE6;  // 输入模式
-    GPIOD->CRL &= ~GPIO_CRL_CNF6;   // 清除配置位
-    GPIOD->CRL |= GPIO_CRL_CNF6_0;  // 浮空输入
+    // 配置PA3为浮空输入（RX）
+    GPIOA->CRL &= ~GPIO_CRL_MODE3;  // 输入模式
+    GPIOA->CRL &= ~GPIO_CRL_CNF3;   // 清除配置位
+    GPIOA->CRL |= GPIO_CRL_CNF3_0;  // 浮空输入
 
     // 4. USART2配置
+    USART2->BRR = 0xEA6;  // 9600 @36MHz
 
-    // 波特率 9600（系统时钟36MHz）
-    USART2->BRR = 0xEA6;
+    USART2->CR1 |= USART_CR1_UE | USART_CR1_TE | USART_CR1_RE;
+    USART2->CR1 &= ~USART_CR1_M;
+    USART2->CR1 &= ~USART_CR1_PCE;
+    USART2->CR2 &= ~USART_CR2_STOP;
 
-    // 使能USART2
-    USART2->CR1 |= USART_CR1_UE; // 使能USART2
-    USART2->CR1 |= USART_CR1_TE; // 发送使能
-    USART2->CR1 |= USART_CR1_RE; // 接收使能
-
-    // 其他配置
-    USART2->CR1 &= ~USART_CR1_M;   // 数据字长8位
-    USART2->CR1 &= ~USART_CR1_PCE; // 禁止奇偶校验
-    USART2->CR2 &= ~USART_CR2_STOP; // 1个停止位
-
-    // 中断配置（与USART1保持一致）
+    // 中断配置
     USART2->CR1 |= USART_CR1_IDLEIE | USART_CR1_RXNEIE;
     NVIC_SetPriorityGrouping(0);
     NVIC_SetPriority(USART2_IRQn, 3);
     NVIC_EnableIRQ(USART2_IRQn);
-
 }
 
 void USART2_SendByte(uint8_t byte) {
@@ -103,4 +90,13 @@ int USART2_Printf(const char *format, ...) {
     }
 
     return len;
+}
+
+/**
+  * @brief  接收回调函数（弱定义）
+  * @note   用户需要在其他文件中重写此函数以实现具体功能
+  */
+__attribute__((weak)) void USART2_ReceiveCallback(void) {
+    // 弱定义，用户可在其他文件中重新实现
+    USART2_Printf("默认实现打印数据: %s\r\n", USART2_buffer);
 }

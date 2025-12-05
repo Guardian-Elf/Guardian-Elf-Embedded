@@ -43,6 +43,10 @@ add_executable(${CMAKE_PROJECT_NAME}
         Libs/OLCD/OLED.c
         Libs/OLCD/OLED_Data.c
         Demo/Src/IIC_demo.c
+        Application/app.c
+        Application/app.h
+        Utils/Src/USART3.c
+        Utils/Inc/USART3.h
 )
 
 # Add STM32CubeMX generated sources

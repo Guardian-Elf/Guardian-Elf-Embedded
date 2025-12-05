@@ -11,28 +11,27 @@ uint8_t USART1_buffer[USART1_R_SIZE] = {0};
 uint32_t USART1_size = 0;
 
 void USART1_Init(void) {
-    // 1. 时钟使能
-    RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;  // 改为GPIOB时钟
+    // 1. 时钟使能 - 使用默认PA9, PA10
+    RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;  // GPIOA时钟
     RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
-    RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
 
-    // 2. 使能部分重映射
-    AFIO->MAPR = AFIO_MAPR_USART1_REMAP;  // 部分重映射到PB6, PB7
+    // 2. 移除重映射代码（不进行重映射）
+    // AFIO->MAPR = AFIO_MAPR_USART1_REMAP;  // 删除这行
 
-    // 3. 引脚配置 - PB6(TX), PB7(RX)
+    // 3. 引脚配置 - PA9(TX), PA10(RX)
 
-    // 配置PB6为复用推挽输出 (USART1_TX)
-    GPIOB->CRL &= ~GPIO_CRL_CNF6;  // 清除配置位
-    GPIOB->CRL |= GPIO_CRL_CNF6_1;  // 复用推挽输出
-    GPIOB->CRL |= GPIO_CRL_MODE6;   // 输出模式，最大速度50MHz
+    // 配置PA9为复用推挽输出 (USART1_TX)
+    GPIOA->CRH &= ~GPIO_CRH_CNF9;  // 清除配置位
+    GPIOA->CRH |= GPIO_CRH_CNF9_1;  // 复用推挽输出
+    GPIOA->CRH |= GPIO_CRH_MODE9;   // 输出模式，最大速度50MHz
 
-    // 配置PB7为浮空输入 (USART1_RX)
-    GPIOB->CRL &= ~GPIO_CRL_MODE7;  // 输入模式
-    GPIOB->CRL &= ~GPIO_CRL_CNF7;   // 清除配置位
-    GPIOB->CRL |= GPIO_CRL_CNF7_0;  // 浮空输入
+    // 配置PA10为浮空输入 (USART1_RX)
+    GPIOA->CRH &= ~GPIO_CRH_MODE10;  // 输入模式
+    GPIOA->CRH &= ~GPIO_CRH_CNF10;   // 清除配置位
+    GPIOA->CRH |= GPIO_CRH_CNF10_0;  // 浮空输入
 
     // 4. USART1配置 (保持不变)
-    USART1->BRR = 0x271;
+    USART1->BRR = 0x271;  // 115200 @72MHz
     USART1->CR1 |= USART_CR1_UE | USART_CR1_TE | USART_CR1_RE;
     USART1->CR1 &= ~USART_CR1_M;
     USART1->CR1 &= ~USART_CR1_PCE;
@@ -43,8 +42,6 @@ void USART1_Init(void) {
     NVIC_SetPriorityGrouping(0);
     NVIC_SetPriority(USART1_IRQn, 3);
     NVIC_EnableIRQ(USART1_IRQn);
-
-
 }
 
 void USART1_SendByte(uint8_t byte) {
@@ -95,4 +92,13 @@ int USART1_Printf(const char *format, ...) {
     while (*p) {
         USART1_SendByte(*p++);
     }
+}
+
+/**
+  * @brief  接收回调函数（弱定义）
+  * @note   用户需要在其他文件中重写此函数以实现具体功能
+  */
+__attribute__((weak)) void USART1_ReceiveCallback(void) {
+    // 弱定义，用户可在其他文件中重新实现
+    USART1_Printf("默认实现打印数据: %s\r\n", USART1_buffer);
 }

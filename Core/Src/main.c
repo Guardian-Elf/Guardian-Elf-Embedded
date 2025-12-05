@@ -20,6 +20,7 @@
 #include "main.h"
 #include "gpio.h"
 #include "IIC_demo.h"
+#include "../../Application/app.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -92,7 +93,7 @@ int main(void) {
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
-    IIC_demo01();
+    App();
     while (1) {
         /* USER CODE END WHILE */
 

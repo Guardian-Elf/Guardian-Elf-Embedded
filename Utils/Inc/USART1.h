@@ -5,7 +5,7 @@
 #ifndef STM32F103ZET6_USART_UTIL_H
 #define STM32F103ZET6_USART_UTIL_H
 
-#include "stm32f103xe.h"
+#include "stm32f103xb.h"
 
 // 接受缓冲区
 #define USART1_R_SIZE 300

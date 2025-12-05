@@ -1,7 +1,7 @@
 #include <stdarg.h>
 #include <stdio.h>
-#include "USART2_Util.h"
-#include "USART1_Util.h"
+#include "USART2.h"
+#include "USART1.h"
 
 // USART2 接收缓冲区
 uint8_t USART2_buffer[USART2_R_SIZE] = {0};

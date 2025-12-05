@@ -3,10 +3,10 @@
 //
 
 #include "USART_demo.h"
-#include "USART1_Util.h"
+#include "USART1.h"
 #include "stm32f1xx_hal.h"
-#include "USART2_Util.h"
-#include "GP10_util.h"
+#include "USART2.h"
+#include "GP10.h"
 
 void USART1_ReceiveCallback() {
     USART1_Printf((char *) USART1_buffer);

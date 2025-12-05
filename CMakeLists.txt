@@ -35,11 +35,14 @@ enable_language(C ASM)
 add_executable(${CMAKE_PROJECT_NAME}
         Demo/Src/Interrupt_demo.c
         Demo/Src/USART_demo.c
-        Utils/Src/USART2_Util.c
-        Utils/Src/USART1_Util.c
+        Utils/Src/USART2.c
+        Utils/Src/USART1.c
         Libs/GP10/GP10_data_struct.h
-        Libs/GP10/GP10_util.h
-        Libs/GP10/GP10_util.c
+        Libs/GP10/GP10.h
+        Libs/GP10/GP10.c
+        Libs/OLCD/OLED.c
+        Libs/OLCD/OLED_Data.c
+        Demo/Src/IIC_demo.c
 )
 
 # Add STM32CubeMX generated sources
@@ -61,6 +64,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         Utils/Inc
         Demo/Inc
         Libs/GP10
+        Libs/OLCD
 )
 
 # Add project symbols (macros)

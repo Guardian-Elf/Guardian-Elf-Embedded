@@ -19,8 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "gpio.h"
-#include "Interrupt_demo.h"
-#include "USART_demo.h"
+#include "IIC_demo.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -87,8 +86,13 @@ int main(void) {
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
-    Interrupt_demo01();
-    USART_demo03();
+    /* USER CODE BEGIN 2 */
+
+    /* USER CODE END 2 */
+
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
+    IIC_demo01();
     while (1) {
         /* USER CODE END WHILE */
 

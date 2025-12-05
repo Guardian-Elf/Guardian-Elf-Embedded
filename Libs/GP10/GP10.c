@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "GP10_util.h"
+#include "GP10.h"
 
 #define MAX_LINE_LENGTH 13
 #define MAX_Field_LENGTH 25

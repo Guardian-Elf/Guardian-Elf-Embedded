@@ -3,11 +3,11 @@
 //
 
 #include "app.h"
-#include "IIC_demo.h"
-#include "USART_demo.h"
+#include "Inc/OLED_Service.h"
+#include "Inc/USART_Service.h"
 
 void App(void) {
-    USART_demo03();
-    IIC_demo01();
+    USART_Service_Init();
+    OLED_Show_BaseInfo();
 }
 

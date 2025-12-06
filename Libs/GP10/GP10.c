@@ -160,6 +160,7 @@ void LatitudeConvert(const char *str, Coordinate *coordinate) {
 // 数据转换函数
 void GP10_DataConvert(char *str, GP10Data *data) {
     if (!check_data_validity(str)) {
+        data->valid = false;
         return;
     }
     char *sentences[MAX_LINE_LENGTH];
@@ -246,7 +247,8 @@ void GP10_DataConvert(char *str, GP10Data *data) {
 
 
 int Gp10_Data2Json(const GP10Data *data, char json_str[], size_t str_size, bool indent) {
-    if (data == NULL || json_str == NULL || str_size == 0) {
+    if (data == NULL || json_str == NULL || str_size == 0 || !data->valid) {
+        snprintf(json_str, str_size, "无效数据");
         return -1;
     }
 
@@ -349,7 +351,8 @@ int Gp10_Data2Json(const GP10Data *data, char json_str[], size_t str_size, bool 
 
 
 int Gp10_Data2ChineseInfo(const GP10Data *data, char info_str[], size_t str_size) {
-    if (data == NULL || info_str == NULL || str_size == 0) {
+    if (data == NULL || info_str == NULL || str_size == 0 || !data->valid) {
+        snprintf(info_str, str_size, "无效数据");
         return -1;
     }
 
@@ -515,7 +518,8 @@ int Gp10_Data2ChineseInfo(const GP10Data *data, char info_str[], size_t str_size
 
 
 int Gp10_Data2SimpleChinese(const GP10Data *data, char info_str[], size_t str_size) {
-    if (data == NULL || info_str == NULL || str_size == 0) {
+    if (data == NULL || info_str == NULL || str_size == 0 || !data->valid) {
+        snprintf(info_str, str_size, "无效数据");
         return -1;
     }
 

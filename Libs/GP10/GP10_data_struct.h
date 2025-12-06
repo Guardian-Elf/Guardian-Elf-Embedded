@@ -66,6 +66,8 @@ typedef struct {
     Time time;
     MotionInfo motion;
     SatelliteInfo satellite;
+    // 是否有效
+    bool valid;
 } GP10Data;
 #endif //GUARDIANELF_GP10_DATA_STRUCT_H
 

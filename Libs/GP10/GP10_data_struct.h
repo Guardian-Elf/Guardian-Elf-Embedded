@@ -66,6 +66,8 @@ typedef struct {
     Time time;
     MotionInfo motion;
     SatelliteInfo satellite;
+    // 设备标识
+    char device_id[20];
     // 是否有效
     bool valid;
 } GP10Data;

@@ -4,6 +4,10 @@
 
 #ifndef GUARDIANELF_USART_SERVICE_H
 #define GUARDIANELF_USART_SERVICE_H
+#include "USART1.h"
+#include "USART2.h"
+#include "USART3.h"
+#include "GP10.h"
 
 void USART_Service_Init();
 

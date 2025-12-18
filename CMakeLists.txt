@@ -50,6 +50,8 @@ add_executable(${CMAKE_PROJECT_NAME}
         Libs/OLCD/OLED_Menu.h
         Application/Src/USART_Service.c
         Application/Inc/USART_Service.h
+        Libs/BH1750/BH1750.c
+        Libs/BH1750/BH1750.h
 )
 
 # Add STM32CubeMX generated sources
@@ -71,6 +73,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         Utils/Inc
         Libs/GP10
         Libs/OLCD
+        Libs/BH1750
         Application
         Application/Inc
 )

@@ -2,11 +2,7 @@
 #define GUARDIANELF_BH1750_H
 
 #include "main.h"
-
-// 引脚配置 - 根据您的要求改为PA4、PA5
-#define BH1750_SCL_PIN GPIO_PIN_4
-#define BH1750_SDA_PIN GPIO_PIN_5
-#define BH1750_PORT    GPIOA
+#include "I2C.h"
 
 // I2C地址
 #define BH1750_ADDR_WRITE  0x46  // ADDR接地时的写地址
@@ -27,13 +23,6 @@
 extern uint32_t BH1750_Lux;
 
 // 函数声明
-void BH1750_Init(void);
-void BH1750_Start(void);
-void BH1750_Stop(void);
-void BH1750_SendByte(uint8_t dat);
-uint8_t BH1750_RecvByte(void);
-void BH1750_SendACK(uint8_t ack);
-uint8_t BH1750_RecvACK(void);
 void BH1750_WriteCmd(uint8_t cmd);
 uint16_t BH1750_ReadData(void);
 uint32_t BH1750_GetLux(void);

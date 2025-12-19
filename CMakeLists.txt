@@ -52,6 +52,15 @@ add_executable(${CMAKE_PROJECT_NAME}
         Application/Inc/USART_Service.h
         Libs/BH1750/BH1750.c
         Libs/BH1750/BH1750.h
+        Utils/Src/I2C.c
+        Utils/Inc/I2C.h
+        Utils/Inc/Interrupt.h
+        Utils/Src/Interrupt.c
+        Application/Src/Interrupt_Service.c
+        Application/Inc/Interrupt_Service.h
+        Application/Inc/Interrupt_Service.h
+        #        Utils/Src/Interrupt.c
+#        Utils/Src/Interrupt.h
 )
 
 # Add STM32CubeMX generated sources

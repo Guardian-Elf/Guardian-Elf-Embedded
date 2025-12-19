@@ -10,6 +10,8 @@
 #define MAX_LINE_LENGTH 13
 #define MAX_Field_LENGTH 25
 
+GP10Data GP10_Data;
+
 
 /**
  * @brief 分割大句子为独立的NMEA语句

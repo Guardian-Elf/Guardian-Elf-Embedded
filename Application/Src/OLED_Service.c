@@ -4,11 +4,12 @@
 
 #include "../Inc/OLED_Service.h"
 #include "BH1750.h"
+#include "I2C.h"
 #include "USART1.h"
 
 void OLED_Show_BaseInfo(void) {
     OLED_Init();
-    BH1750_Init();
+    I2C_Init();
 
 
     OLED_ShowString(16, 0, "--时间信息--", OLED_8X16);
@@ -45,8 +46,7 @@ void OLED_Show_BaseInfo(void) {
     OLED_ShowString(0, 16, "光照: ", OLED_8X16);
     OLED_SavePage();
 
-    OLED_ChangeMode(OLED_SWITCH_MODE_GRADIENT);
-    while (1) {
-        OLED_NextPage();
-    }
+    OLED_Update();
+
+    OLED_ChangeMode(OLED_SWITCH_MODE_VERTICAL);
 }

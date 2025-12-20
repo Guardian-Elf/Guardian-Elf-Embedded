@@ -50,17 +50,19 @@ add_executable(${CMAKE_PROJECT_NAME}
         Libs/OLCD/OLED_Menu.h
         Application/Src/USART_Service.c
         Application/Inc/USART_Service.h
-        Libs/BH1750/BH1750.c
-        Libs/BH1750/BH1750.h
         Utils/Src/I2C.c
         Utils/Inc/I2C.h
         Utils/Inc/Interrupt.h
         Utils/Src/Interrupt.c
         Application/Src/Interrupt_Service.c
-        Application/Inc/Interrupt_Service.h
-        Application/Inc/Interrupt_Service.h
-        #        Utils/Src/Interrupt.c
-#        Utils/Src/Interrupt.h
+        Utils/Src/Delay.c
+        Libs/MPU6050/MPU6050_Reg.h
+        Libs/MPU6050/MPU6050.h
+        Libs/MPU6050/MPU6050.c
+        Libs/BH1750/BH1750.c
+        Libs/BH1750/BH1750.h
+
+
 )
 
 # Add STM32CubeMX generated sources
@@ -83,6 +85,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         Libs/GP10
         Libs/OLCD
         Libs/BH1750
+        Libs/MPU6050
         Application
         Application/Inc
 )

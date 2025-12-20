@@ -4,13 +4,17 @@
 uint32_t BH1750_Lux = 0;
 
 
-
 /**
   * @brief  向BH1750发送命令
   */
 void BH1750_WriteCmd(uint8_t cmd)
 {
-    I2C_WriteCmd(cmd, BH1750_ADDR_WRITE);
+    I2C_Start();
+    I2C_SendByte(BH1750_ADDR_WRITE);
+    I2C_RecvACK();
+    I2C_SendByte(cmd);
+    I2C_RecvACK();
+    I2C_Stop();
 }
 
 /**
@@ -18,7 +22,20 @@ void BH1750_WriteCmd(uint8_t cmd)
   */
 uint16_t BH1750_ReadData(void)
 {
-    return I2C_ReadData(BH1750_ADDR_READ);
+    uint16_t data;
+
+    I2C_Start();
+    I2C_SendByte(BH1750_ADDR_READ);
+    I2C_RecvACK();
+
+    data = I2C_RecvByte() << 8;
+    I2C_SendACK(0);
+
+    data |= I2C_RecvByte();
+    I2C_SendACK(1);
+
+    I2C_Stop();
+    return data;
 }
 
 /**

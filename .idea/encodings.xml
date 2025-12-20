@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Libs/MPU6050/IIC/IIC.c" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Libs/MPU6050/IIC/IIC.h" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Libs/MPU6050/MPU6050.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Libs/MPU6050/MPU6050.h" charset="UTF-8" />
+  </component>
+</project>

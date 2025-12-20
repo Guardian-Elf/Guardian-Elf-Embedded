@@ -4,6 +4,7 @@
 #include "MPU6050_Reg.h"
 #include "MPU6050.h"
 
+#define MPU6050_ADDR        0x68        // 7位地址
 #define MPU6050_ADDRESS        0xD0        //MPU6050的I2C从机地址
 
 // 根据配置的灵敏度定义
@@ -18,8 +19,8 @@
 #define GYRO_SENSITIVITY_2000  16.4f       // ±2000°/s: 16.4 LSB/°/s
 
 // 当前配置（根据MPU6050_Init中的配置）
-#define CURRENT_ACCEL_SENSITIVITY  ACCEL_SENSITIVITY_16G  // ±16g
-#define CURRENT_GYRO_SENSITIVITY   GYRO_SENSITIVITY_2000  // ±2000°/s
+#define CURRENT_ACCEL_SENSITIVITY  ACCEL_SENSITIVITY_2G  // ±16g
+#define CURRENT_GYRO_SENSITIVITY   GYRO_SENSITIVITY_250  // ±2000°/s
 
 MPU6050Data MPU6050_Data;
 
@@ -29,16 +30,55 @@ MPU6050Data MPU6050_Data;
   * 返 回 值：无
   */
 void MPU6050_Init(void) {
-    I2C_Init();                                    //先初始化底层的I2C
 
-    /*MPU6050寄存器初始化，需要对照MPU6050手册的寄存器描述配置，此处仅配置了部分重要的寄存器*/
-    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);        //电源管理寄存器1，取消睡眠模式，选择时钟源为X轴陀螺仪
-    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);        //电源管理寄存器2，保持默认值0，所有轴均不待机
-    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);        //采样率分频寄存器，配置采样率
-    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);            //配置寄存器，配置DLPF
-    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x18);    //陀螺仪配置寄存器，选择满量程为±2000°/s
-    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x18);    //加速度计配置寄存器，选择满量程为±16g
+    // 先复位设备
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x80);  // 设备复位
+
+    // 取消睡眠模式
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_1, 0x01);
+
+    // 先配置为±2g（最低量程）
+    MPU6050_WriteReg(MPU6050_ACCEL_CONFIG, 0x00);  // ±2g
+    MPU6050_WriteReg(MPU6050_GYRO_CONFIG, 0x00);   // ±250°/s
+
+    MPU6050_WriteReg(MPU6050_CONFIG, 0x06);
+    MPU6050_WriteReg(MPU6050_SMPLRT_DIV, 0x09);
+    MPU6050_WriteReg(MPU6050_PWR_MGMT_2, 0x00);
+
+
 }
+
+/**
+  * 函    数：MPU6050写寄存器
+  * 参    数：RegAddress 寄存器地址，范围：参考MPU6050手册的寄存器描述
+  * 参    数：Data 要写入寄存器的数据，范围：0x00~0xFF
+  * 返 回 值：无
+  */
+void MPU6050_WriteReg(uint8_t RegAddress, uint8_t Data) {
+    I2C_WriteReg(MPU6050_ADDR, RegAddress, Data);
+}
+
+/**
+  * 函    数：MPU6050读寄存器
+  * 参    数：RegAddress 寄存器地址，范围：参考MPU6050手册的寄存器描述
+  * 返 回 值：读取寄存器的数据，范围：0x00~0xFF
+  */
+uint8_t MPU6050_ReadReg(uint8_t RegAddress) {
+    return I2C_ReadReg(MPU6050_ADDR, RegAddress);
+}
+
+
+/**
+  * 函    数：MPU6050获取ID号
+  * 参    数：无
+  * 返 回 值：MPU6050的ID号
+  */
+uint8_t MPU6050_GetID(void) {
+    return MPU6050_ReadReg(MPU6050_WHO_AM_I);        //返回WHO_AM_I寄存器的值
+}
+
+
+// 数据的读取与转换
 
 /**
   * 函    数：原始加速度值转换为g（重力加速度）
@@ -80,58 +120,6 @@ float MPU6050_TempRawToCelsius(int16_t raw)
 float MPU6050_CalculateTotalAccel(float ax_g, float ay_g, float az_g)
 {
     return sqrtf(ax_g * ax_g + ay_g * ay_g + az_g * az_g);
-}
-
-/**
-  * 函    数：MPU6050写寄存器
-  * 参    数：RegAddress 寄存器地址，范围：参考MPU6050手册的寄存器描述
-  * 参    数：Data 要写入寄存器的数据，范围：0x00~0xFF
-  * 返 回 值：无
-  */
-void MPU6050_WriteReg(uint8_t RegAddress, uint8_t Data) {
-    I2C_Start();                        //I2C起始
-    I2C_SendByte(MPU6050_ADDRESS);    //发送从机地址，读写位为0，表示即将写入
-    I2C_RecvACK();                    //接收应答
-    I2C_SendByte(RegAddress);            //发送寄存器地址
-    I2C_RecvACK();                    //接收应答
-    I2C_SendByte(Data);                //发送要写入寄存器的数据
-    I2C_RecvACK();                    //接收应答
-    I2C_Stop();                        //I2C终止
-}
-
-/**
-  * 函    数：MPU6050读寄存器
-  * 参    数：RegAddress 寄存器地址，范围：参考MPU6050手册的寄存器描述
-  * 返 回 值：读取寄存器的数据，范围：0x00~0xFF
-  */
-uint8_t MPU6050_ReadReg(uint8_t RegAddress) {
-    uint8_t Data;
-
-    I2C_Start();                        //I2C起始
-    I2C_SendByte(MPU6050_ADDRESS);    //发送从机地址，读写位为0，表示即将写入
-    I2C_RecvACK();                    //接收应答
-    I2C_SendByte(RegAddress);            //发送寄存器地址
-    I2C_RecvACK();                    //接收应答
-
-    I2C_Start();                        //I2C重复起始
-    I2C_SendByte(MPU6050_ADDRESS | 0x01);    //发送从机地址，读写位为1，表示即将读取
-    I2C_RecvACK();                    //接收应答
-    Data = I2C_RecvByte();            //接收指定寄存器的数据
-    I2C_SendACK(1);                    //发送应答，给从机非应答，终止从机的数据输出
-    I2C_Stop();                        //I2C终止
-
-    return Data;
-}
-
-
-
-/**
-  * 函    数：MPU6050获取ID号
-  * 参    数：无
-  * 返 回 值：MPU6050的ID号
-  */
-uint8_t MPU6050_GetID(void) {
-    return MPU6050_ReadReg(MPU6050_WHO_AM_I);        //返回WHO_AM_I寄存器的值
 }
 
 /**

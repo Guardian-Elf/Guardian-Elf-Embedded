@@ -43,3 +43,14 @@ void Delay_us(uint16_t nus)
         }
     }
 }
+
+/**
+  * @brief  毫秒级延时（基于SysTick）
+  * @param  nms 延时时长
+  * @retval 无
+  */
+  void Delay_ms(uint16_t nms) {
+      while(nms--) {
+          Delay_us(1000);
+      }
+  }

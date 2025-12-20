@@ -61,6 +61,10 @@ add_executable(${CMAKE_PROJECT_NAME}
         Libs/MPU6050/MPU6050.c
         Libs/BH1750/BH1750.c
         Libs/BH1750/BH1750.h
+        Libs/AHT20/AHT20.c
+        Libs/AHT20/AHT20.h
+        Libs/BMP280/BMP280.c
+        Libs/BMP280/BMP280.h
 
 
 )
@@ -85,6 +89,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         Libs/GP10
         Libs/OLCD
         Libs/BH1750
+        Libs/AHT20
+        Libs/BMP280
         Libs/MPU6050
         Application
         Application/Inc

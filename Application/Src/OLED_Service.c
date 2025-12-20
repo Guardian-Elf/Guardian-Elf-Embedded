@@ -8,10 +8,6 @@
 #include "USART1.h"
 
 void OLED_Show_BaseInfo(void) {
-    OLED_Init();
-    I2C_Init();
-
-
     OLED_ShowString(16, 0, "--时间信息--", OLED_8X16);
     OLED_ShowString(0, 16, "日期: ", OLED_8X16);
     OLED_ShowString(0, 32, "时间: ", OLED_8X16);
@@ -42,11 +38,16 @@ void OLED_Show_BaseInfo(void) {
     OLED_Clear();
 
     OLED_AddPage();
-    OLED_ShowString(16, 0, "--光照信息--", OLED_8X16);
-    OLED_ShowString(0, 16, "光照: ", OLED_8X16);
+    OLED_ShowString(16, 0, "--环境信息--", OLED_8X16);
+    OLED_ShowString(0, 16, "L: ", OLED_8X16);
+    OLED_ShowString(0, 32, "P: ", OLED_8X16);
+    OLED_ShowString(0, 48, "H: ", OLED_8X16);
+    OLED_ShowString(64, 48, "T: ", OLED_8X16);
     OLED_SavePage();
 
     OLED_Update();
 
     OLED_ChangeMode(OLED_SWITCH_MODE_VERTICAL);
+
+
 }

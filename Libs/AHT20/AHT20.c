@@ -33,7 +33,7 @@ void AHT20_ReadData() {
     uint8_t readBuffer[6];
 
     I2C_SendBytes(AHT20_ADDRESS, sendBuffer, 3);
-    Delay_ms(300);
+    HAL_Delay(50);
 
     I2C_RecvBytes(AHT20_ADDRESS, readBuffer, 6);
 

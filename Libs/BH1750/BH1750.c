@@ -47,10 +47,9 @@ uint16_t BH1750_ReadData(void)
 uint32_t BH1750_GetLux(void)
 {
     BH1750_WriteCmd(BH1750_PWR_ON);
-    Delay_us(100);
 
     BH1750_WriteCmd(BH1750_ONE_H);
-    Delay_us(180);
+    HAL_Delay(80);
     BH1750_Lux = (uint32_t)BH1750_ReadData() * 10 / 12;
     return BH1750_Lux;
 }

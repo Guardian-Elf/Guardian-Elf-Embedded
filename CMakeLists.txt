@@ -68,6 +68,9 @@ add_executable(${CMAKE_PROJECT_NAME}
         Utils/Inc/Timer.h
         Application/Src/Timer_Service.c
         Application/Inc/Timer_Service.h
+        Libs/W25Q64/W25Q64.c
+        Utils/Src/SPI.c
+        Libs/W25Q64/W25Q64.h
 
 
 )
@@ -94,6 +97,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         Libs/BH1750
         Libs/AHT20
         Libs/BMP280
+        Libs/W25Q64
         Libs/MPU6050
         Application
         Application/Inc

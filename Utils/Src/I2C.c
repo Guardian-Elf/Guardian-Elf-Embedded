@@ -6,9 +6,9 @@
 #include "Delay.h"
 
 // 引脚配置
-#define I2C_SCL_PIN GPIO_PIN_4
-#define I2C_SDA_PIN GPIO_PIN_5
-#define I2C_PORT    GPIOA
+#define I2C_SCL_PIN GPIO_PIN_14
+#define I2C_SDA_PIN GPIO_PIN_15
+#define I2C_PORT    GPIOC
 
 /**
   * @brief  初始化BH1750 GPIO引脚

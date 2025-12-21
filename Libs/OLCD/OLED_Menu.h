@@ -12,6 +12,8 @@
 
 #define OLED_PAGE_NUM 8
 
+extern uint8_t OLED_Page_Id;
+
 // 切换种类枚举
 enum OLED_Switch_Type {
     OLED_SWITCH_DYNAMIC_UP,

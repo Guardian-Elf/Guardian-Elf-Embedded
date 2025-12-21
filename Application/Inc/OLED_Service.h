@@ -11,4 +11,7 @@
 // 初始化基本信息
 void OLED_Show_BaseInfo(void);
 
+// 更新数据
+void OLED_Update_Data(void);
+
 #endif //GUARDIANELF_OLED_SERVICE_H

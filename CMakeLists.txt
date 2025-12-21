@@ -33,8 +33,7 @@ enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
-        Utils/Src/USART2.c
-        Utils/Src/USART1.c
+        Utils/Src/USART.c
         Libs/GP10/GP10_data_struct.h
         Libs/GP10/GP10.h
         Libs/GP10/GP10.c
@@ -42,8 +41,6 @@ add_executable(${CMAKE_PROJECT_NAME}
         Libs/OLCD/OLED_Data.c
         Application/app.c
         Application/app.h
-        Utils/Src/USART3.c
-        Utils/Inc/USART3.h
         Application/Src/OLED_Service.c
         Application/Inc/OLED_Service.h
         Libs/OLCD/OLED_Menu.c

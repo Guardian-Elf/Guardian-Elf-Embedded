@@ -4,9 +4,6 @@
 
 #include "../Inc/USART_Service.h"
 
-void USART1_ReceiveCallback() {
-    USART1_Printf("串口1中断：%s\n", USART1_buffer);
-}
 
 void USART2_ReceiveCallback() {
     USART1_Printf("串口2中断(原始定位数据)：%s\n", USART2_buffer);
@@ -22,12 +19,9 @@ void USART2_ReceiveCallback() {
     USART1_Printf("中文简要信息：%s\n", buf);
 }
 
-void USART3_ReceiveCallback() {
-    USART1_Printf("串口3中断：%s\n", USART3_buffer);
-}
 
 void USART_Service_Init() {
-    USART1_Init();
-//    USART2_Init();
-//    USART3_Init();
+    USART_Init(USART1, 115200);
+    USART_Init(USART2, 9600);
+    USART_Init(USART3, 115200);
 }

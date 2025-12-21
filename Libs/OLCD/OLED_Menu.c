@@ -6,8 +6,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "OLED_Menu.h"
-#include "USART1.h"
-#include "stm32f1xx_hal.h"
+#include "USART.h"
 
 // 页缓存
 uint8_t OLED_Pages[OLED_PAGE_NUM][8][128];
@@ -287,6 +286,7 @@ void OLED_AddPage() {
 
 // 下一页
 void OLED_NextPage() {
+    OLED_SavePage();
     bool is_next = true;
     int next_page = (OLED_Page_Id + 1) % OLED_PAGE_NUM;
     while (is_next) {
@@ -309,6 +309,7 @@ void OLED_NextPage() {
 
 // 上一页
 void OLED_PrevPage() {
+    OLED_SavePage();
     bool is_prev = true;
     int prev_page = (OLED_Page_Id - 1 + OLED_PAGE_NUM) % OLED_PAGE_NUM;
     while (is_prev) {

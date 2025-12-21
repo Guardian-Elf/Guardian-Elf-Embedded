@@ -8,7 +8,7 @@ extern float AHT20_Temperature, AHT20_Humidity;
 
 void AHT20_Init();
 
-void AHT20_ReadData(float *temperature, float *humidity);
+void AHT20_ReadData();
 
 
 #endif //GUARDIANELF__AHT20_H

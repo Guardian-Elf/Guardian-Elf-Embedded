@@ -8,9 +8,9 @@
 #include "stm32f1xx_hal.h"
 
 // 接受缓冲区
-#define USART_R_SIZE 300
+#define USART_R_SIZE 500
 // 发送缓冲区
-#define USART_T_SIZE 300
+#define USART_T_SIZE 500
 
 extern UART_HandleTypeDef huart1;
 extern uint8_t USART1_buffer[USART_R_SIZE];

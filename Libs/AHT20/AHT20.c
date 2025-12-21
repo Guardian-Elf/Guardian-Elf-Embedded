@@ -1,9 +1,9 @@
 #include "AHT20.h"
+#include "Delay.h"
 
 
 // AHT20地址
 #define AHT20_ADDRESS    0x38  // 7位地址
-#define AHT20_ADDRESS_READ     0x71  // 读地址
 
 float AHT20_Temperature, AHT20_Humidity;
 
@@ -28,12 +28,12 @@ void AHT20_Init() {
 
 
 
-void AHT20_ReadData(float *temperature, float *humidity) {
+void AHT20_ReadData() {
     uint8_t sendBuffer[3] = {0xAC, 0x33, 0x00};
     uint8_t readBuffer[6];
 
     I2C_SendBytes(AHT20_ADDRESS, sendBuffer, 3);
-    HAL_Delay(80);
+    Delay_ms(300);
 
     I2C_RecvBytes(AHT20_ADDRESS, readBuffer, 6);
 
@@ -43,13 +43,11 @@ void AHT20_ReadData(float *temperature, float *humidity) {
 
     uint32_t data;
     data = (readBuffer[3] >> 4) | (readBuffer[2] << 4) | readBuffer[1] << 12;
-    *humidity = (float) data * 100.0f / (1 << 20);
+    AHT20_Humidity = (float) data * 100.0f / (1 << 20);
 
     data = ((readBuffer[3] & 0x0F) << 16) | (readBuffer[4] << 8) | (readBuffer[5]);
-    *temperature = (float) data * 200.0f / (1 << 20) - 50.0f;
+    AHT20_Temperature= (float) data * 200.0f / (1 << 20) - 50.0f;
 
 
-    AHT20_Temperature = *temperature;
-    AHT20_Humidity = *humidity;
 }
 

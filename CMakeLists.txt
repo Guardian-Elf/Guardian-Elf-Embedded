@@ -62,6 +62,12 @@ add_executable(${CMAKE_PROJECT_NAME}
         Libs/AHT20/AHT20.h
         Libs/BMP280/BMP280.c
         Libs/BMP280/BMP280.h
+        Utils/Src/DMA.c
+        Utils/Inc/DMA.h
+        Utils/Inc/Timer.c
+        Utils/Inc/Timer.h
+        Application/Src/Timer_Service.c
+        Application/Inc/Timer_Service.h
 
 
 )

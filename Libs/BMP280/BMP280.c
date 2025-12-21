@@ -63,6 +63,8 @@ struct BMP280_ComReg
     int16_t	P9;
 } BMP280_ComReg;
 
+double BMP280_Temp, BMP280_Press;
+
 
 uint8_t BMP280_ReadReg(uint8_t reg) {
 
@@ -135,13 +137,13 @@ double BMP280_compensate_T(int adc_T)
 }
 
 // 测量
-void BMP280_ReadData(double * press, double* temp) {
+void BMP280_ReadData() {
     int32_t press_raw, temp_raw;
     press_raw = (BMP280_ReadReg(BMP280_REG_PRESS_MSB) << 12) | (BMP280_ReadReg(BMP280_REG_PRESS_LSB) << 4) | (BMP280_ReadReg(BMP280_REG_PRESS_XLSB) >> 4);
     temp_raw = (BMP280_ReadReg(BMP280_REG_TEMP_MSB) << 12) | (BMP280_ReadReg(BMP280_REG_TEMP_LSB) << 4) | (BMP280_ReadReg( BMP280_REG_TEMP_XLSB) >> 4);
 
-    *temp = BMP280_compensate_T(temp_raw);
-    *press = BMP280_compensate_P(press_raw);
+    BMP280_Temp = BMP280_compensate_T(temp_raw);
+    BMP280_Press = BMP280_compensate_P(press_raw);
 
 }
 

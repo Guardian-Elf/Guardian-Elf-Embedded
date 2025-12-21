@@ -121,6 +121,7 @@ int USART_Printf(UART_HandleTypeDef *huart, const char *format, va_list args) {
 
     if (len > 0) {
         HAL_UART_Transmit(huart, (uint8_t *)buffer, len, HAL_MAX_DELAY);
+
     }
 
     return len;
@@ -138,7 +139,7 @@ int USART1_Printf(const char *format, ...) {
 int USART2_Printf(const char *format, ...) {
     va_list args;
     va_start(args, format);
-    int len = USART_Printf(&huart1, format, args);
+    int len = USART_Printf(&huart2, format, args);
     va_end(args);
     return len;
 }
@@ -146,7 +147,7 @@ int USART2_Printf(const char *format, ...) {
 int USART3_Printf(const char *format, ...) {
     va_list args;
     va_start(args, format);
-    int len = USART_Printf(&huart1, format, args);
+    int len = USART_Printf(&huart3, format, args);
     va_end(args);
     return len;
 }

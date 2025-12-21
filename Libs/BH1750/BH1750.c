@@ -1,4 +1,5 @@
 #include "BH1750.h"
+#include "Delay.h"
 
 // I2C地址
 #define BH1750_ADDR  0x23  // ADDR接地时的写地址
@@ -46,10 +47,10 @@ uint16_t BH1750_ReadData(void)
 uint32_t BH1750_GetLux(void)
 {
     BH1750_WriteCmd(BH1750_PWR_ON);
-    HAL_Delay(10);
+    Delay_us(100);
 
     BH1750_WriteCmd(BH1750_ONE_H);
-    HAL_Delay(180);
+    Delay_us(180);
     BH1750_Lux = (uint32_t)BH1750_ReadData() * 10 / 12;
     return BH1750_Lux;
 }

@@ -70,31 +70,24 @@ void OLED_Show_BaseInfo(void) {
 
 
 void OLED_Update_Data(void) {
-    static double t, p;
-    static float h;
-
     switch (OLED_Page_Id) {
         case 4:
-            MPU6050_ReadAccel();
             OLED_ShowFloatNum(20, 16, MPU6050_Data.ax_t, 3, 2, OLED_8X16);
             OLED_ShowFloatNum(20, 32, MPU6050_Data.ay_t, 3, 2, OLED_8X16);
             OLED_ShowFloatNum(20, 48, MPU6050_Data.az_t, 3, 2, OLED_8X16);
 
             break;
         case 5:
-            MPU6050_ReadGyro();
             OLED_ShowFloatNum(20, 16, MPU6050_Data.gx_t, 3, 2, OLED_8X16);
             OLED_ShowFloatNum(20, 32, MPU6050_Data.gy_t, 3, 2, OLED_8X16);
             OLED_ShowFloatNum(20, 48, MPU6050_Data.gz_t, 3, 2, OLED_8X16);
             break;
         case 6:
-            BMP280_ReadData(&p, &t);
 
-            OLED_ShowFloatNum(80, 48, t, 2, 2, OLED_8X16);
-            OLED_ShowFloatNum(16, 32, p, 6, 3, OLED_8X16);
-            AHT20_ReadData((float *) &t, &h);
-            OLED_ShowFloatNum(16, 48, h, 2, 2, OLED_8X16);
-            OLED_ShowNum(16, 16, BH1750_GetLux(), 5, OLED_8X16);
+            OLED_ShowFloatNum(80, 48, AHT20_Temperature, 2, 2, OLED_8X16);
+            OLED_ShowFloatNum(16, 32, BMP280_Press, 6, 3, OLED_8X16);
+            OLED_ShowFloatNum(16, 48, AHT20_Humidity, 2, 2, OLED_8X16);
+            OLED_ShowNum(16, 16, BH1750_Lux, 5, OLED_8X16);
 
             break;
         default:

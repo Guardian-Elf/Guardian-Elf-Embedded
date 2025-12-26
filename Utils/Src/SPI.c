@@ -8,6 +8,7 @@
 #define SPI_MOSI_PIN    GPIO_PIN_7    // DI
 
 #define SPI_PORT        GPIOA
+#define HAL_RCC_GPIOx_CLK_ENABLE()          __HAL_RCC_GPIOA_CLK_ENABLE()
 
 /*引脚配置层*/
 
@@ -61,7 +62,7 @@ void SPI_Init(void)
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     /* 使能GPIOA时钟 */
-    __HAL_RCC_GPIOA_CLK_ENABLE();
+    HAL_RCC_GPIOx_CLK_ENABLE();
 
     /* 配置CS、SCK、MOSI为输出模式 */
     GPIO_InitStruct.Pin = SPI_CS_PIN | SPI_SCK_PIN | SPI_MOSI_PIN;

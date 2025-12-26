@@ -64,13 +64,17 @@ add_executable(${CMAKE_PROJECT_NAME}
         Libs/BMP280/BMP280.h
         Utils/Src/DMA.c
         Utils/Inc/DMA.h
-        Utils/Inc/Timer.c
+        Utils/Src/Timer.c
         Utils/Inc/Timer.h
         Application/Src/Timer_Service.c
         Application/Inc/Timer_Service.h
         Libs/W25Q64/W25Q64.c
         Utils/Src/SPI.c
         Libs/W25Q64/W25Q64.h
+        Application/Src/W25Q64_Service.c
+        Application/Inc/W25Q64_Service.h
+        Application/Src/DataConversion_Service.c
+        Application/Inc/DataConversion_Service.h
 
 
 )
@@ -114,6 +118,13 @@ list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
         stm32cubemx
+
+        # 添加浮点数支持
+        -Wl,-u,_printf_float
+        -Wl,-u,_scanf_float
+
+        # 链接数学库
+        m
 
         # Add user defined libraries
 )

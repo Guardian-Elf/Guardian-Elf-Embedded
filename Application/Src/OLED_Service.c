@@ -7,6 +7,7 @@
 #include "AHT20.h"
 #include "BH1750.h"
 #include "MPU6050.h"
+#include "USART.h"
 
 
 void OLED_Show_BaseInfo(void) {
@@ -70,10 +71,14 @@ void OLED_Show_BaseInfo(void) {
 
 
 void OLED_Update_Data(void) {
+    MPU6050_ReadAccel();
+    MPU6050_ReadGyro();
+    BMP280_ReadData();
+    AHT20_ReadData();
 
     switch (OLED_Page_Id) {
         case 4:
-            MPU6050_ReadAccel();
+
 
             OLED_ShowFloatNum(20, 16, MPU6050_Data.ax_t, 3, 2, OLED_8X16);
             OLED_ShowFloatNum(20, 32, MPU6050_Data.ay_t, 3, 2, OLED_8X16);
@@ -81,15 +86,12 @@ void OLED_Update_Data(void) {
 
             break;
         case 5:
-            MPU6050_ReadGyro();
 
             OLED_ShowFloatNum(20, 16, MPU6050_Data.gx_t, 3, 2, OLED_8X16);
             OLED_ShowFloatNum(20, 32, MPU6050_Data.gy_t, 3, 2, OLED_8X16);
             OLED_ShowFloatNum(20, 48, MPU6050_Data.gz_t, 3, 2, OLED_8X16);
             break;
         case 6:
-            BMP280_ReadData();
-            AHT20_ReadData();
 
             OLED_ShowFloatNum(80, 48, AHT20_Temperature, 2, 2, OLED_8X16);
             OLED_ShowFloatNum(16, 32, BMP280_Press, 6, 3, OLED_8X16);

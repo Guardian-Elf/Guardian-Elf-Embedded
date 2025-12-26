@@ -2,6 +2,7 @@
 #define __W25Q64_H
 
 #include "stm32f1xx_hal.h"
+#include "stdbool.h"
 
 /**
   * 函    数：W25Q64读取ID号

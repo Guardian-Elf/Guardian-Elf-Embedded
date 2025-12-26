@@ -9,13 +9,14 @@
 #define I2C_SCL_PIN GPIO_PIN_14
 #define I2C_SDA_PIN GPIO_PIN_15
 #define I2C_PORT    GPIOC
+#define HAL_RCC_GPIOx_CLK_ENABLE() __HAL_RCC_GPIOC_CLK_ENABLE()
 
 /**
   * @brief  初始化BH1750 GPIO引脚
   */
 void I2C_Init(void) {
     /* GPIO端口时钟使能 */
-    __HAL_RCC_GPIOA_CLK_ENABLE();  // 开启I2C_PORT的时钟
+    HAL_RCC_GPIOx_CLK_ENABLE();  // 开启I2C_PORT的时钟
 
     /* GPIO初始化结构体配置 */
     GPIO_InitTypeDef GPIO_InitStruct = {0};

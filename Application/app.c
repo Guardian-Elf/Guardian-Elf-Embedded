@@ -17,7 +17,6 @@
 #include "../Libs/MPU6050/MPU6050.h"
 #include "MPU6050_Reg.h"
 #include "DMA.h"
-#include "W25Q64.h"
 
 
 //
@@ -39,14 +38,15 @@
 #include "../Libs/MPU6050/MPU6050.h"
 #include "MPU6050_Reg.h"
 #include "DMA.h"
-#include "W25Q64.h"
 #include "SPI.h"
+#include "W25Q64_Service.h"
 
 
 void App(void) {
     // 初始化硬件
     Delay_Init();
     I2C_Init();
+    SPI_Init();
     Timer_Init_2();
     USART_Service_Init();
     Interrupt_Service_Init();
@@ -57,17 +57,16 @@ void App(void) {
     AHT20_Init();
     MPU6050_Init();
 
+    // 读取数据
+    W25Q64_Read_Device_ID();
+    // 写入数据
+//    W25Q64_Write_Device_ID("_test_device_2025/12/26");
 
     // 启动程序
-
-
     OLED_Show_BaseInfo();
 
     while (1)
     {
-
-
-
         OLED_Update_Data();
     }
 

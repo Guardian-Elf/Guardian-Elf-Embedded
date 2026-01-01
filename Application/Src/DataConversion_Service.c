@@ -21,7 +21,7 @@ void EnvironmentDataToJson(EnvironmentData *data, char *json_str, size_t size, b
                  "  \"temperature\": %.2f,\n"
                  "  \"humidity\": %.1f,\n"
                  "  \"pressure\": %.2f,\n"
-                 "  \"illumination\": %d\n"
+                 "  \"illuminance\": %d\n"
                  "}",
                  data->Temperature,
                  data->Humidity,
@@ -31,7 +31,7 @@ void EnvironmentDataToJson(EnvironmentData *data, char *json_str, size_t size, b
     } else {
         // 紧凑JSON（单行）
         snprintf(json_str, size,
-                 "{\"temperature\":%.2f,\"humidity\":%.1f,\"pressure\":%.2f,\"illumination\":%d}",
+                 "{\"temperature\":%.2f,\"humidity\":%.1f,\"pressure\":%.2f,\"illuminance\":%d}",
                  data->Temperature,
                  data->Humidity,
                  data->Press,
@@ -53,27 +53,22 @@ void MotionDataToJson(MotionData *data, char *json_str, size_t size, bool indent
     }
 
     if (indent) {
-        // 带格式化的JSON（多行）
+        // 与Java SpeedData实体类字段名完全一致
         snprintf(json_str, size,
                  "{\n"
-                 "  \"acceleration\": {\n"
-                 "    \"x\": %.4f,\n"
-                 "    \"y\": %.4f,\n"
-                 "    \"z\": %.4f\n"
-                 "  },\n"
-                 "  \"gyroscope\": {\n"
-                 "    \"x\": %.4f,\n"
-                 "    \"y\": %.4f,\n"
-                 "    \"z\": %.4f\n"
-                 "  }\n"
+                 "  \"accelX\": %.4f,\n"
+                 "  \"accelY\": %.4f,\n"
+                 "  \"accelZ\": %.4f,\n"
+                 "  \"gyroX\": %.4f,\n"
+                 "  \"gyroY\": %.4f,\n"
+                 "  \"gyroZ\": %.4f\n"
                  "}",
                  data->Ax, data->Ay, data->Az,
                  data->Gx, data->Gy, data->Gz
         );
     } else {
-        // 紧凑JSON（单行）
         snprintf(json_str, size,
-                 "{\"acceleration\":{\"x\":%.4f,\"y\":%.4f,\"z\":%.4f},\"gyroscope\":{\"x\":%.4f,\"y\":%.4f,\"z\":%.4f}}",
+                 "{\"accelX\":%.4f,\"accelY\":%.4f,\"accelZ\":%.4f,\"gyroX\":%.4f,\"gyroY\":%.4f,\"gyroZ\":%.4f}",
                  data->Ax, data->Ay, data->Az,
                  data->Gx, data->Gy, data->Gz
         );

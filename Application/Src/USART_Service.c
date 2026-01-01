@@ -2,7 +2,9 @@
 // Created by pc on 2025/12/6.
 //
 
+#include <stdio.h>
 #include "../Inc/USART_Service.h"
+#include "Delay.h"
 
 
 void USART2_ReceiveCallback() {
@@ -19,4 +21,11 @@ void USART_Service_Init() {
     USART_Init(USART1, 115200);
 //    USART_Init(USART2, 9600);
     USART_Init(USART3, 115200);
+}
+
+void USART_Service_Set2ESP(enum SerialDataOperationCode code, char *data) {
+    char str[500] = {'\0'};
+    sprintf(str, "%d\n%s::end::\r\n", code,  data);
+    USART3_Printf(str);
+    Delay_ms(1000);
 }

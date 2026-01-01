@@ -60,7 +60,7 @@ void App(void) {
     // 读取数据
     W25Q64_Read_Device_ID();
     // 写入数据
-//    W25Q64_Write_Device_ID("_test_device_2025/12/26");
+    W25Q64_Write_Device_ID("_test_device_2025-12-26");
 
     // 启动程序
     OLED_Show_BaseInfo();

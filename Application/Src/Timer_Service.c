@@ -2,7 +2,6 @@
 // Created by pc on 2025/12/21.
 //
 
-#include <stdio.h>
 #include "Timer_Service.h"
 #include "USART.h"
 #include "AHT20.h"
@@ -12,8 +11,8 @@
 #include "GP10.h"
 #include "DataConversion_Service.h"
 #include "W25Q64_Service.h"
-
-
+#include "Enum.h"
+#include "USART_Service.h"
 
 
 // 测量数据并发送
@@ -45,12 +44,8 @@ void Timer_Interrupt_2(void) {
 
 
     USART1_Printf("发送数据\r\n");
-    USART3_Printf((char * )W25Q64_Device_Id);
-    USART3_Printf("\n");
-    USART3_Printf(json_str);
-    USART3_Printf("\n");
-    USART3_Printf(e_data);
-    USART3_Printf("\n");
-    USART3_Printf(m_data);
-    USART3_Printf("::end::");
+    USART_Service_Set2ESP(SerialDataOperationCode_DeviceId, (char *) W25Q64_Device_Id);
+    USART_Service_Set2ESP(SerialDataOperationCode_LocationData, json_str);
+    USART_Service_Set2ESP(SerialDataOperationCode_EnvironmentData, e_data);
+    USART_Service_Set2ESP(SerialDataOperationCode_MotionData, m_data);
 }

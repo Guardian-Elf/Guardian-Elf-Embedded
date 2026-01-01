@@ -75,6 +75,7 @@ add_executable(${CMAKE_PROJECT_NAME}
         Application/Inc/W25Q64_Service.h
         Application/Src/DataConversion_Service.c
         Application/Inc/DataConversion_Service.h
+        Data/Enum.h
 
 
 )
@@ -105,6 +106,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         Libs/MPU6050
         Application
         Application/Inc
+        Data
 )
 
 # Add project symbols (macros)
